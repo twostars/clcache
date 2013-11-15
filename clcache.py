@@ -1002,7 +1002,12 @@ def processCompileRequest(compiler, args):
     cmdLine = expandCommandLine(sys.argv[1:])
 
     # ignore Pch commands
-    cmdLine = filter(lambda x: not (x in ['/Yu','/Yc']), cmdLine)
+    i = 0
+    while i < len(cmdLine):
+        if cmdLine[i] == '/Yu' or cmdLine[i] == '/Yc':
+            del cmdLine[i]
+            del cmdLine[i]
+        i += 1
 
     printTraceStatement("Expanded commandline '%s'" % cmdLine )
     analysisResult, sourceFile, outputFile = analyzeCommandLine(cmdLine)
