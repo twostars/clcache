@@ -523,7 +523,7 @@ def splitCommandsFile(line):
     # since seems it difficult to set up it to correctly parse escaped quotes.
     # A good test line to split is
     # '"-IC:\\Program files\\Some library" -DX=1 -DVERSION=\\"1.0\\"
-    # -I..\\.. -I"..\\..\\lib" -DMYPATH=\\"C:\\Path\\" /Fo"C:\\A\\B\\" /Fd"C:\\A\\B.pdb"'
+    # -I..\\.. -I"..\\..\\lib" -DMYPATH=\\"C:\\Path\\"'
     i = 0
     wordStart = -1
     insideQuotes = False
@@ -532,7 +532,7 @@ def splitCommandsFile(line):
         if line[i] == ' ' and not insideQuotes and wordStart >= 0:
             result.append(extractArgument(line, wordStart, i))
             wordStart = -1
-        if line[i] == '"':
+        if line[i] == '"' and ((i == 0) or (i > 0 and line[i - 1] != '\\')): 
             insideQuotes = not insideQuotes
         if line[i] != ' ' and wordStart < 0:
             wordStart = i
